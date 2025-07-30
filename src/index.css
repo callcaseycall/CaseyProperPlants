@@ -1,0 +1,65 @@
+.plants {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  gap: 1rem;
+}
+
+.layout {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.plants-grid {
+  flex: 3;
+}
+
+.cart {
+  flex: 1;
+  max-width: 200px;
+}
+
+.cart-item {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.cart-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cart-controls span {
+  font-size: 1.3rem;
+}
+
+.cart-controls button {
+  font-size: 1rem;
+  padding: 0.2rem 2rem;
+}
+
+.plant-card {
+  border: 1px;
+  border-radius: 6px;
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  gap: 1rem;
+}
+
+.plant-name {
+  font-size: large;
+  font-weight: bold;
+}
+
+.plant-image {
+  font-size: 5rem;
+}
+
+.plant-card button {
+  padding: 0.2rem 0.4rem;
+}
