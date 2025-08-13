@@ -8,7 +8,7 @@ export default function PlantsButton({ plants, addToCart }) {
         <div className="plant-card" key={plant.id}>
           <div className="plant-image">{plant.image}</div>
           <div className="plant-name">{plant.name}</div>
-          <button onClick={() => addToCart(plant)}>Add to cart</button>
+          <button onClick={() => addToCart(plant.name)}>Add to cart</button>
         </div>
       ))}
     </div>

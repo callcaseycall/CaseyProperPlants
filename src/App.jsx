@@ -5,34 +5,32 @@ import "./index.css";
 
 export default function App() {
   // console.log("getting started");
-  const cart = useState([]);
-  const cartItems = cart[0];
-  const setCartItems = cart[1];
-
-  const addToCart = (plant) => {
-    setCartItems((prevItems) => {
-      const existing = prevItems.find((item) => item.id === plant.id);
-      if (existing) {
-        return prevItems.map((item) =>
-          item.id === plant.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      } else {
-        return [...prevItems, { ...plant, quantity: 1 }];
-      }
-    });
+  const [cartNames, setCartNames] = useState([]);
+  const [quantities, setQuantities] = useState([]);
+  const addToCart = (plantName) => {
+    const index = cartNames.indexOf(plantName);
+    if (index !== -1) {
+      setQuantities(quantities.map((qty, i) => (i === index ? qty + 1 : qty)));
+    } else {
+      setCartNames([...cartNames, plantName]);
+      setQuantities([...quantities, 1]);
+    }
   };
 
-  const updateQuantity = (plantId, delta) => {
-    setCartItems((prevItems) =>
-      prevItems
-        .map((item) =>
-          item.id === plantId
-            ? { ...item, quantity: item.quantity + delta }
-            : item
-        )
-        .filter((item) => item.quantity > 0)
-    );
+  const updateQuantity = (plantName, amount) => {
+    const index = cartNames.indexOf(plantName);
+    if (index === -1) return;
+    const newQty = quantities[index] + amount;
+    if (newQty <= 0) {
+      setCartNames(cartNames.filter((_, i) => i !== index));
+      setQuantities(quantities.filter((_, i) => i !== index));
+    } else {
+      setQuantities(
+        quantities.map((qty, i) => (i === index ? qty + amount : qty))
+      );
+    }
   };
+
   return (
     <>
       <header>
@@ -40,30 +38,33 @@ export default function App() {
         <h2>Plants</h2>
       </header>
       <main className="layout">
-        <section className="plants-grid">
+        <section className="plants-selection">
           <p>Choose Your Plants</p>
           <div></div>
           <PlantsButton plants={PLANTS} addToCart={addToCart} />
         </section>
-        <aside className="cart">
+        <div className="cart">
           <h2>Cart</h2>
-          {cartItems.length === 0 ? (
+          {cartNames.length === 0 ? (
             <p>Cart is empty</p>
           ) : (
-            cartItems.map((item) => (
-              <div className="cart-item" key={item.id}>
-                <span>
-                  {item.image} {item.name}
-                </span>
-                <div className="cart-controls">
-                  <button onClick={() => updateQuantity(item.id, -1)}>-</button>
-                  <span>{item.quantity}</span>
-                  <button onClick={() => updateQuantity(item.id, 1)}>+</button>
+            cartNames.map((name, index) => {
+              const plant = PLANTS.find((p) => p.name === name);
+              return (
+                <div className="cart-item" key={name}>
+                  <section>
+                    {plant.image} {name}
+                  </section>
+                  <div className="cart-controls">
+                    <button onClick={() => updateQuantity(name, -1)}>-</button>
+                    <section>{quantities[index]}</section>
+                    <button onClick={() => updateQuantity(name, 1)}>+</button>
+                  </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
-        </aside>
+        </div>
       </main>
     </>
   );
